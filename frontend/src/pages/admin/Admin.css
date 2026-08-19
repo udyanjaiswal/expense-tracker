@@ -1,0 +1,25 @@
+.admin-shell { min-height: 100vh; background: #f4f6f9; }
+.admin-sidebar { position: fixed; inset: 0 auto 0 0; width: 250px; padding: 1.25rem; background: #172b4d; color: #fff; flex-direction: column; z-index: 1030; }
+.admin-sidebar-brand { font-size: 1.2rem; font-weight: 700; margin-bottom: 2rem; }
+.admin-sidebar .nav-link, .admin-offcanvas .nav-link { color: #dce5f2; border-radius: .45rem; padding: .65rem .75rem; }
+.admin-sidebar .nav-link:hover, .admin-sidebar .nav-link.active, .admin-offcanvas .nav-link:hover, .admin-offcanvas .nav-link.active { background: #29466f; color: #fff; }
+.admin-sidebar .nav-link i, .admin-offcanvas .nav-link i { width: 1.35rem; }
+.admin-content { min-height: 100vh; margin-left: 250px; }
+.admin-mobile-header { min-height: 58px; padding: .6rem .9rem; display: flex; align-items: center; justify-content: space-between; background: #172b4d; color: #fff; position: sticky; top: 0; z-index: 1020; }
+.admin-offcanvas { background: #172b4d; color: #fff; width: min(84vw, 290px) !important; }
+.admin-form-card, .section-card, .summary-card { background: #fff; border: 1px solid #e5e7eb; border-radius: .6rem; }
+.admin-form-card, .section-card { padding: 1rem; }
+.summary-card { padding: 1rem; height: 100%; }
+.summary-label { color: #667085; font-size: .875rem; margin-bottom: .3rem; }
+.summary-value { font-size: 1.35rem; font-weight: 700; margin: 0; }
+.section-title { font-size: 1.1rem; font-weight: 700; margin: 0; }
+.data-table { margin: 0; min-width: 640px; }
+.data-table th { background: #f8fafc; color: #475467; font-size: .78rem; text-transform: uppercase; letter-spacing: .02em; white-space: nowrap; }
+.data-table td { vertical-align: middle; }
+.filter-pills .btn { border-radius: 999px; }
+.category-row + .category-row { border-top: 1px solid #e9ecef; }
+.admin-login { min-height: 100vh; display: grid; place-items: center; padding: 1rem; background: #f4f6f9; }
+.admin-login-box { width: 100%; max-width: 400px; background: #fff; padding: 1.5rem; border: 1px solid #e5e7eb; border-radius: .75rem; box-shadow: 0 8px 24px rgba(16, 24, 40, .06); }
+.admin-login-heading { text-align: center; margin-bottom: 1.5rem; }.admin-login-heading i { display: inline-grid; place-items: center; width: 2.75rem; height: 2.75rem; margin-bottom: .75rem; border-radius: .6rem; background: #172b4d; color: #fff; font-size: 1.25rem; }.admin-login-heading h1 { margin: 0; font-size: 1.3rem; font-weight: 700; }.admin-login-heading p { margin: .35rem 0 0; color: #667085; font-size: .9rem; }.admin-login-form { display: grid; gap: 1rem; }.admin-login-form .form-label { margin-bottom: .4rem; font-weight: 600; }
+@media (max-width: 991.98px) { .admin-content { margin-left: 0; } }
+@media (min-width: 768px) { .admin-form-card, .section-card { padding: 1.25rem; } }

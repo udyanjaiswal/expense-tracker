@@ -1,0 +1,26 @@
+:root { font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #1f2937; background: #f4f6f9; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; background: #f4f6f9; }
+button, input, select, textarea { font: inherit; }
+.btn:focus-visible, .form-control:focus, .form-select:focus { box-shadow: 0 0 0 .2rem rgba(30, 64, 112, .2); }
+.page-title { font-size: 1.5rem; font-weight: 700; margin: 0 0 1.25rem; }
+.money-negative { color: #b42318 !important; }
+.table-responsive { -webkit-overflow-scrolling: touch; }
+
+.employee-pin-page, .loading-screen { min-height: 100vh; display: grid; place-items: center; padding: 1rem; }
+.employee-pin-card, .expense-form, .expense-card, .empty-state { background: #fff; border: 1px solid #e5e7eb; border-radius: .75rem; }
+.employee-pin-card { width: 100%; max-width: 390px; padding: 1.5rem; box-shadow: 0 8px 24px rgba(16, 24, 40, .05); }
+.employee-brand { text-align: center; margin-bottom: 1.5rem; }.employee-brand h1 { margin: 0; font-size: 1.35rem; font-weight: 700; }.employee-brand p { margin: .4rem 0 0; color: #667085; font-size: .9rem; }
+.brand-icon { width: 2.75rem; height: 2.75rem; margin: 0 auto .75rem; display: grid; place-items: center; border-radius: .6rem; background: #172b4d; color: #fff; font-size: 1.25rem; font-weight: 700; }
+.employee-pin-form { display: grid; gap: 1rem; }.employee-pin-form .form-label { display: block; margin-bottom: .45rem; font-weight: 600; }.employee-pin-input { width: 100%; min-height: 48px; text-align: center; font-size: 1.2rem; letter-spacing: .45em; padding-left: 1em; }
+.employee-dashboard, .add-expense-page { width: 100%; max-width: 760px; margin: auto; padding: 1rem; }
+.employee-header, .add-expense-header, .section-heading { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
+.employee-header h2, .add-expense-header h2 { margin: 0; font-size: 1.45rem; }
+.expense-summary { margin-top: 1.25rem; padding: 1rem; border-radius: .75rem; background: #172b4d; color: #fff; }
+.expense-summary span { display: block; color: #dce5f2; font-size: .9rem; }.expense-summary strong { display: block; margin-top: .25rem; font-size: 1.5rem; }
+.expense-section { margin-top: 1.5rem; }.expense-list { margin-top: 1rem; display: grid; gap: .75rem; }
+.expense-card { padding: 1rem; display: grid; grid-template-columns: 1fr auto; gap: .5rem 1rem; align-items: center; }.expense-card button { grid-column: 1 / -1; }
+.logout-button, .back-button { border: 0; background: transparent; color: #344054; padding: .5rem; }.back-button { background: #fff; border: 1px solid #e5e7eb; border-radius: .5rem; }
+.expense-form { margin-top: 1.25rem; padding: 1rem; }.form-group { margin-bottom: 1rem; }.form-group label { display: flex; justify-content: space-between; font-weight: 600; margin-bottom: .5rem; }.optional { font-size: .8rem; color: #667085; font-weight: 400; }
+.form-group select, .form-group textarea { width: 100%; padding: .625rem .75rem; border: 1px solid #ced4da; border-radius: .375rem; background: #fff; }.amount-input { display: flex; align-items: center; border: 1px solid #ced4da; border-radius: .375rem; padding: 0 .75rem; }.amount-input input { width: 100%; border: 0; outline: 0; padding: .625rem; }.error-message { margin: .75rem 0; color: #b42318; font-size: .9rem; }.submit-expense-button { width: 100%; padding: .65rem 1rem; border: 0; border-radius: .375rem; background: #172b4d; color: #fff; }.form-loading { color: #667085; padding: .75rem 0; }
+@media (min-width: 768px) { .employee-dashboard, .add-expense-page { padding: 2rem; }.expense-card { grid-template-columns: 1fr auto auto; }.expense-card button { grid-column: auto; } }

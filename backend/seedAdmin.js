@@ -1,12 +1,15 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-require("dotenv").config();
 
 const Admin = require("./models/Admin");
 
-const ADMIN_NAME = "name of admin";
-const ADMIN_EMAIL = "mail";
-const ADMIN_PASSWORD = "password";
+require("dotenv").config({
+    path: ".env.seed"
+});
+
+const ADMIN_NAME = process.env.ADMIN_NAME;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 const createAdmin = async () => {
     try {

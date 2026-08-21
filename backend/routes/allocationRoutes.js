@@ -9,6 +9,8 @@ const {
 
 const adminAuth = require("../middleware/adminAuth");
 
+const employeeAuth = require("../middleware/employeeAuth");
+
 const router = express.Router();
 
 router.post(
@@ -27,7 +29,7 @@ router.put(
     updateAllocation
 );
 
-    
+
 router.get(
     "/my-summary",
     employeeAuth,

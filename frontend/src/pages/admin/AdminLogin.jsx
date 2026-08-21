@@ -1,7 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Admin.css";
+import api from "../../services/api";
 
 const AdminLogin = () => {
 
@@ -18,8 +18,8 @@ const AdminLogin = () => {
         try {
             setLoading(true);
             setErrorMessage("");
-            const res = await axios.post(
-                "http://localhost:2411/api/admin/login",
+            const res = await api.post(
+                "/admin/login",
                 {
                     email,
                     password

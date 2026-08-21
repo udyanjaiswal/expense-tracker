@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import "./Admin.css";
 import AdminLayout from "../../components/AdminLayout";
 import { EmptyState, LoadingState, formatDateTime, formatMoney } from "../../components/Ui";
+import api from "../../services/api";
 
 export default function AdminDashboard() {
   const [dashboard, setDashboard] = useState(null);
   const [error, setError] = useState("");
-  useEffect(() => { (async () => { try { const token = localStorage.getItem("adminToken"); const res = await axios.get("http://localhost:2411/api/admin/dashboard/", { headers: { Authorization: `Bearer ${token}` } }); setDashboard(res.data); } catch { setError("Unable to load dashboard data."); } })(); }, []);
+  useEffect(() => { (async () => { try { const token = localStorage.getItem("adminToken"); const res = await api.get("/admin/dashboard/", { headers: { Authorization: `Bearer ${token}` } }); setDashboard(res.data); } catch { setError("Unable to load dashboard data."); } })(); }, []);
   if (!dashboard && !error) return <AdminLayout title="Dashboard"><LoadingState label="Loading dashboard..." /></AdminLayout>;
   if (error) return <AdminLayout title="Dashboard"><div className="alert alert-danger">{error}</div></AdminLayout>;
   const summary = dashboard.summary || {};

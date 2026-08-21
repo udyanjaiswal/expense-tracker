@@ -1,5 +1,5 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
-import axios from "axios";
 import "./Admin.css";
 
 import AdminLayout from "../../components/AdminLayout";
@@ -9,8 +9,7 @@ import {
   formatDate,
   formatMoney
 } from "../../components/Ui";
-
-const API = "http://localhost:2411";
+import api from "../../services/api";
 
 function Allocations() {
 
@@ -43,15 +42,15 @@ function Allocations() {
 
       const [employeesResponse, allocationsResponse] =
         await Promise.all([
-          axios.get(
-            `${API}/api/employees/active`,
+          api.get(
+            "/employees/active",
             {
               headers: getHeaders()
             }
           ),
 
-          axios.get(
-            `${API}/api/allocations/`,
+          api.get(
+            "/allocations/",
             {
               headers: getHeaders()
             }
@@ -129,8 +128,8 @@ function Allocations() {
 
       if (editingId) {
 
-        await axios.put(
-          `${API}/api/allocations/${editingId}`,
+        await api.put(
+          `/allocations/${editingId}`,
           {
             amount: Number(data.amount),
             type: data.type,
@@ -143,8 +142,8 @@ function Allocations() {
 
       } else {
 
-        await axios.post(
-          `${API}/api/allocations/`,
+        await api.post(
+          "/allocations/",
           {
             employee: data.employee,
             amount: Number(data.amount),

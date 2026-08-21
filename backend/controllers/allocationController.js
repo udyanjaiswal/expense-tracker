@@ -1,5 +1,6 @@
 const Allocation = require("../models/Allocation");
 const Employee = require("../models/Employee");
+const Expense = require("../models/Expense");
 
 const generateAllocationId = () => {
     const randomNumber = Math.floor(
@@ -160,10 +161,60 @@ const updateAllocation = async (req, res) => {
     }
 };
 
+const getMyAllocationSummary = async (req, res) => {
+
+    try {
+
+        const employeeId = req.employee._id;
+
+        const allocations = await Allocation.find({
+            employee: employeeId
+        });
+
+        const expenses = await Expense.find({
+            employee: employeeId
+        });
+
+        const totalAllocated = allocations.reduce(
+            (total, allocation) =>
+                total + Number(allocation.amount || 0),
+            0
+        );
+
+        const totalSpent = expenses.reduce(
+            (total, expense) =>
+                total + Number(expense.amount || 0),
+            0
+        );
+
+        const remaining = totalAllocated - totalSpent;
+
+        res.status(200).json({
+
+            totalAllocated,
+
+            totalSpent,
+
+            remaining
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+            message: "Failed to fetch allocation summary"
+        });
+
+    }
+
+};
+
 module.exports = {
     createAllocation,
     getAllocations,
     updateAllocation,
-    
+    getMyAllocationSummary
 
 };

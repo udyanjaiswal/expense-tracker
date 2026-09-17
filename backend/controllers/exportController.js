@@ -8,6 +8,61 @@ const formatDate = (date) => {
     return new Date(date).toLocaleDateString("en-IN");
 };
 
+// Get selected month range in Asia/Kolkata timezone
+const getMonthRange = (month) => {
+    if (!month) {
+        const now = new Date();
+
+        const parts = new Intl.DateTimeFormat("en-CA", {
+            timeZone: "Asia/Kolkata",
+            year: "numeric",
+            month: "2-digit"
+        }).formatToParts(now);
+
+        const year = parts.find(
+            (part) => part.type === "year"
+        ).value;
+
+        const monthNumber = parts.find(
+            (part) => part.type === "month"
+        ).value;
+
+        month = `${year}-${monthNumber}`;
+    }
+
+    if (!/^\d{4}-\d{2}$/.test(month)) {
+        throw new Error("Invalid month. Use YYYY-MM.");
+    }
+
+    const [year, monthNumber] = month
+        .split("-")
+        .map(Number);
+
+    const start = new Date(
+        `${year}-${String(monthNumber).padStart(2, "0")}-01T00:00:00+05:30`
+    );
+
+    const nextYear =
+        monthNumber === 12
+            ? year + 1
+            : year;
+
+    const nextMonth =
+        monthNumber === 12
+            ? 1
+            : monthNumber + 1;
+
+    const end = new Date(
+        `${nextYear}-${String(nextMonth).padStart(2, "0")}-01T00:00:00+05:30`
+    );
+
+    return {
+        start,
+        end
+    };
+};
+
+
 const createExpenseWorkbook = (
     expenses,
     filename,
@@ -76,7 +131,7 @@ const createExpenseWorkbook = (
     };
 
     sheet.getColumn("amount").numFmt =
-        '₹#,##0.00';
+        "₹#,##0.00";
 
     sheet.getRow(1).font = {
         bold: true
@@ -106,8 +161,17 @@ const exportEmployeeReport = async (req, res) => {
 
         const { employeeId } = req.params;
 
+        const {
+            start,
+            end
+        } = getMonthRange(req.query.month);
+
         const expenses = await Expense.find({
-            employee: employeeId
+            employee: employeeId,
+            expenseDate: {
+                $gte: start,
+                $lt: end
+            }
         })
             .populate("category", "name")
             .sort({
@@ -117,13 +181,13 @@ const exportEmployeeReport = async (req, res) => {
 
         if (expenses.length === 0) {
             return res.status(404).json({
-                message: "No expenses found for this employee"
+                message: "No expenses found for this employee in the selected month"
             });
         }
 
         await createExpenseWorkbook(
             expenses,
-            "Employee-Expense-Report",
+            `Employee-Expense-${req.query.month || "Current-Month"}`,
             res
         );
 
@@ -150,8 +214,17 @@ const exportCategoryReport = async (req, res) => {
 
         const { categoryId } = req.params;
 
+        const {
+            start,
+            end
+        } = getMonthRange(req.query.month);
+
         const expenses = await Expense.find({
-            category: categoryId
+            category: categoryId,
+            expenseDate: {
+                $gte: start,
+                $lt: end
+            }
         })
             .populate("category", "name")
             .sort({
@@ -161,7 +234,7 @@ const exportCategoryReport = async (req, res) => {
 
         if (expenses.length === 0) {
             return res.status(404).json({
-                message: "No expenses found for this category"
+                message: "No expenses found for this category in the selected month"
             });
         }
 
@@ -171,7 +244,7 @@ const exportCategoryReport = async (req, res) => {
 
         await createExpenseWorkbook(
             expenses,
-            `${categoryName}-Expense-Report`,
+            `${categoryName}-Expense-${req.query.month || "Current-Month"}`,
             res
         );
 
@@ -196,7 +269,17 @@ const exportHeadOfficeReport = async (req, res) => {
 
     try {
 
-        const expenses = await Expense.find()
+        const {
+            start,
+            end
+        } = getMonthRange(req.query.month);
+
+        const expenses = await Expense.find({
+            expenseDate: {
+                $gte: start,
+                $lt: end
+            }
+        })
             .populate("category", "name")
             .sort({
                 expenseDate: 1,
@@ -205,13 +288,13 @@ const exportHeadOfficeReport = async (req, res) => {
 
         if (expenses.length === 0) {
             return res.status(404).json({
-                message: "No expenses found"
+                message: "No expenses found in the selected month"
             });
         }
 
         await createExpenseWorkbook(
             expenses,
-            "Head-Office-Expense-Report",
+            `Head-Office-Expense-${req.query.month || "Current-Month"}`,
             res
         );
 

@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 const Employee = require("../models/Employee");
 const jwt = require("jsonwebtoken");
 const Expense = require("../models/Expense");
-const { getMonthRange } = require("../utils/month");
 
 const generatePin = () => {
     return Math.floor(1000 + Math.random() * 9000).toString();
@@ -158,14 +157,8 @@ const verifyEmployeePin = async (req, res) => {
 
 const getMyExpenses = async (req, res) => {
     try {
-        const { start: monthStart, end: nextMonthStart } = getMonthRange();
-
         const expenses = await Expense.find({
-            employee: req.employee._id,
-            expenseDate: {
-                $gte: monthStart,
-                $lt: nextMonthStart
-            }
+            employee: req.employee._id
         })
             .populate("category", "name")
             .sort({

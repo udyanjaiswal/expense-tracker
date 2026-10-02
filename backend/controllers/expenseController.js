@@ -37,7 +37,8 @@ const createExpense = async (req, res) => {
             });
         }
 
-        if (!amount || Number(amount) <= 0) {
+        const numericAmount = Number(amount);
+        if (!Number.isFinite(numericAmount) || numericAmount <= 0) {
             return res.status(400).json({
                 message: "Valid amount is required"
             });
@@ -66,7 +67,7 @@ const createExpense = async (req, res) => {
 
             category,
 
-            amount: Number(amount),
+            amount: numericAmount,
 
             description: description?.trim() || ""
         });
@@ -99,7 +100,8 @@ const updateMyExpense = async (req , res) => {
                 message:"Category is required"
             })
         }
-        if ( !amount || Number(amount) <= 0){
+        const numericAmount = Number(amount);
+        if (!Number.isFinite(numericAmount) || numericAmount <= 0){
             return res.status(400).json({
                 message:"Valid amount is required"
             });
@@ -128,7 +130,7 @@ const updateMyExpense = async (req , res) => {
         }
 
         expense.category = category;
-        expense.amount = Number(amount);
+        expense.amount = numericAmount;
         expense.description = description?.trim() || "";
 
         await expense.save();

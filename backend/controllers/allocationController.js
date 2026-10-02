@@ -1,7 +1,7 @@
 const Allocation = require("../models/Allocation");
 const Employee = require("../models/Employee");
 const Expense = require("../models/Expense");
-const { getMonthRange, getMonthLabel } = require("../utils/month");
+const { getMonthRange, getMonthLabel, toPaise, fromPaise } = require("../utils/month");
 
 const generateAllocationId = () => {
     const randomNumber = Math.floor(
@@ -26,7 +26,8 @@ const createAllocation = async (req, res) => {
             });
         }
 
-        if (!amount || Number(amount) <= 0) {
+        const numericAmount = Number(amount);
+        if (!Number.isFinite(numericAmount) || numericAmount <= 0) {
             return res.status(400).json({
                 message: "Valid amount is required"
             });
@@ -46,7 +47,7 @@ const createAllocation = async (req, res) => {
         const allocation = await Allocation.create({
             allocationId: generateAllocationId(),
             employee,
-            amount: Number(amount),
+            amount: numericAmount,
             type: type || "allocation",
             note: note?.trim() || ""
         });
@@ -111,13 +112,14 @@ const updateAllocation = async (req, res) => {
         }
 
         if (amount !== undefined) {
-            if (Number(amount) <= 0) {
+            const numericAmount = Number(amount);
+            if (!Number.isFinite(numericAmount) || numericAmount <= 0) {
                 return res.status(400).json({
                     message: "Valid amount is required"
                 });
             }
 
-            allocation.amount = Number(amount);
+            allocation.amount = numericAmount;
         }
 
         if (type !== undefined) {
@@ -168,7 +170,6 @@ const getMyAllocationSummary = async (req, res) => {
 
         const employeeId = req.employee._id;
         const { start: monthStart, end: nextMonthStart } = getMonthRange();
-
         const allocations = await Allocation.find({
             employee: employeeId,
             allocationDate: {
@@ -185,19 +186,17 @@ const getMyAllocationSummary = async (req, res) => {
             }
         });
 
-        const totalAllocated = allocations.reduce(
-            (total, allocation) =>
-                total + Number(allocation.amount || 0),
-            0
+        const totalAllocatedPaise = allocations.reduce(
+            (total, allocation) => total + toPaise(allocation.amount), 0
         );
 
-        const totalSpent = expenses.reduce(
-            (total, expense) =>
-                total + Number(expense.amount || 0),
-            0
+        const totalSpentPaise = expenses.reduce(
+            (total, expense) => total + toPaise(expense.amount), 0
         );
 
-        const remaining = totalAllocated - totalSpent;
+        const totalAllocated = fromPaise(totalAllocatedPaise);
+        const totalSpent = fromPaise(totalSpentPaise);
+        const remaining = fromPaise(totalAllocatedPaise - totalSpentPaise);
 
         res.status(200).json({
 
@@ -207,7 +206,12 @@ const getMyAllocationSummary = async (req, res) => {
 
             totalSpent,
 
-            remaining
+            remaining,
+            period: {
+                label: getMonthLabel(monthStart),
+                start: monthStart,
+                end: nextMonthStart
+            }
 
         });
 

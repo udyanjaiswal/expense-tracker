@@ -187,3 +187,10 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
 }
+.expense-history { margin-top: 1.25rem; border-top: 1px solid #e5e7eb; padding-top: 1rem; }
+.expense-history summary { cursor: pointer; color: #344054; font-weight: 600; }
+.expense-history .expense-list { margin-top: .75rem; }
+@media (max-width: 575.98px) {
+    .expense-summary-grid { grid-template-columns: 1fr; gap: .25rem; }
+    .expense-summary { margin-top: .75rem; }
+}

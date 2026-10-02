@@ -38,8 +38,13 @@ const getMonthLabel = (date) =>
         year: "numeric"
     }).format(new Date(date));
 
+const toPaise = (amount) => Math.round(Number(amount || 0) * 100);
+const fromPaise = (paise) => paise / 100;
+
 module.exports = {
     getMonthRange,
     getMonthKey,
-    getMonthLabel
+    getMonthLabel,
+    toPaise,
+    fromPaise
 };
